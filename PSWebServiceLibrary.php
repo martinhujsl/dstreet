@@ -47,7 +47,7 @@ class PrestaShopWebservice
     /** @var string Minimal version of PrestaShop to use with this library */
     const psCompatibleVersionsMin = '1.4.0.0';
     /** @var string Maximal version of PrestaShop to use with this library */
-    const psCompatibleVersionsMax = '8.1.7';
+    const psCompatibleVersionsMax = '9.9.9';
 
     /**
      * PrestaShopWebservice constructor. Throw an exception when CURL is not installed/activated
@@ -450,12 +450,17 @@ class PrestaShopWebservice
     {
         $xml = '';
 	$request_type = 'PUT';
+
+        // Allow custom request_type (PATCH, PUT, etc.) to be specified
+        if (isset($options['request_type'])) {
+            $request_type = $options['request_type'];
+        }
+
         if (isset($options['url'])) {
             $url = $options['url'];
 	} elseif ((isset($options['resource'], ) || isset($options['url'])) && $options['putXml']) {
-	    $request_type = $options['request_type']; 
             $url = (isset($options['url']) ? $options['url'] :
-            $this->url . '/api/' . $options['resource']. '/');    
+            $this->url . '/api/' . $options['resource']. '/');
             $xml = $options['putXml'];
         } elseif ((isset($options['resource'], $options['id']) || isset($options['url'])) && $options['putXml']) {
             $url = (isset($options['url']) ? $options['url'] :
