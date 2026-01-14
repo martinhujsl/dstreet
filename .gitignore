@@ -11,3 +11,6 @@ vendor/
 # Test files
 test-*.xml
 test-*.php
+
+# Production configuration
+defines-prod.cfg.php

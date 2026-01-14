@@ -15,7 +15,14 @@ error_reporting(E_ALL);
 //define('PS_SHOP_PATH', 'http://test2.mariti.sk/');		// Root path of your PrestaShop store
 //define('PS_WS_AUTH_KEY', 'TRRVDNJ75X1FT9FPYZJVZ829GFZIMFY9');	// Auth key (Get it in your Back Office)
 require_once 'iniSets.cfg.php';
-require_once 'defines.cfg.php';
+
+// Load production config if exists, otherwise use default
+if (file_exists(__DIR__ . '/defines-prod.cfg.php')) {
+    require_once 'defines-prod.cfg.php';
+} else {
+    require_once 'defines.cfg.php';
+}
+
 require_once('PSWebServiceLibrary.php');
 
 // Determine if running from CLI or browser
@@ -125,4 +132,4 @@ catch (PrestaShopWebserviceException $ex)
 	if ($trace[0]['args'][0] == 404) echo 'Bad ID';
 	else if ($trace[0]['args'][0] == 401) echo 'Bad auth key';
 	else echo 'Other error<br />'.$ex->getMessage();
-}						
+}
