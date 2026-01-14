@@ -1,0 +1,13 @@
+# Composer dependencies
+vendor/
+
+# IDE files
+.idea/
+.vscode/
+
+# Excel files (temporary)
+*.xlsx
+
+# Test files
+test-*.xml
+test-*.php
