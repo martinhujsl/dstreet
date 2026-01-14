@@ -33,7 +33,7 @@ $importClass = new PrestaShopWebsSrvicesImportClass();
 $importClass->getProductReferencesFromEshopByManufacturer(MANUFACTURER_ID);
 
 // Step 2: Process XML file
-$importClass->xmlToArray(__DIR__ . '/' . SOURCE_XML_FILE);
+$importClass->xmlToArray(SOURCE_XML_FILE);
 
 // Step 3: Create XML for products not found
 $importClass->createNotFindProductXML();
@@ -67,30 +67,31 @@ echo '<br>======================================';
 //die();
 
 // Step 7: AUTO-UPDATE via API (NEW - using working test logic)
-if ($debugFilter) {
-	echo '<br><br><strong>Now updating PrestaShop via API...</strong>';
-	flush(); // Force output to browser
-	ob_flush(); // Flush output buffer
-}
+echo '<br><br><strong>Step 6: Updating stock availables via API...</strong>';
+echo '<br>(This may take several minutes depending on the number of updates...)';
+flush();
 
 // Add error handling
 try {
 	$resultStock = $importClass->updateStockAvailablesViaAPI();
+	echo '<br>✓ Stock availables updated';
+	flush();
 } catch (Exception $e) {
-	if ($debugFilter) {
-		echo '<br><strong style="color:red;">ERROR in stock API update: ' . $e->getMessage() . '</strong>';
-		echo '<br>Stack trace: <pre>' . $e->getTraceAsString() . '</pre>';
-	}
+	echo '<br><strong style="color:red;">ERROR in stock API update: ' . $e->getMessage() . '</strong>';
+	echo '<br>Stack trace: <pre>' . $e->getTraceAsString() . '</pre>';
 	$resultStock = ['success' => 0, 'errors' => 1];
 }
+
 // Step 8: Update products (visibility/active)
+echo '<br><br><strong>Step 7: Updating products via API...</strong>';
+flush();
 try {
 	$resultProducts = $importClass->updateProductsViaAPI();
+	echo '<br>✓ Products updated';
+	flush();
 } catch (Exception $e) {
-	if ($debugFilter) {
-		echo '<br><strong style="color:red;">ERROR in products API update: ' . $e->getMessage() . '</strong>';
-		echo '<br>Stack trace: <pre>' . $e->getTraceAsString() . '</pre>';
-	}
+	echo '<br><strong style="color:red;">ERROR in products API update: ' . $e->getMessage() . '</strong>';
+	echo '<br>Stack trace: <pre>' . $e->getTraceAsString() . '</pre>';
 	$resultProducts = ['success' => 0, 'errors' => 1];
 }
 

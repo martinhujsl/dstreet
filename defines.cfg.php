@@ -7,7 +7,7 @@ define('PS_WS_AUTH_KEY', '4ABKPB18AYWMTCLX6FDK9239B99XBEPX'); // Auth key (Get i
 //define('PS_WS_AUTH_KEY', 'TRRVDNJ75X1FT9FPYZJVZ829GFZIMFY9'); // Auth key (Get it in your Back Office)
 define('MANUFACTURER_ID', 7);
 define('ID_SHOP', 1); // ID of the shop in multistore (use 1 for default, or specific shop ID)
-define('SOURCE_XML_FILE', '../../download/dstreet_full.xml'); // Path to source XML file
+define('SOURCE_XML_FILE', dirname(dirname(__DIR__)) . '/download/dstreet_full.xml'); // Path to source XML file
 define('PRODUCTS_NOT_FIND', 'webservicesxml/products_notfind.xml');
 define('PRODUCTS_UPDATE', 'webservicesxml/products_update.xml');
 define('STOCK_AVAILABLES_UPDATE', 'webservicesxml/stock_availables_update.xml');

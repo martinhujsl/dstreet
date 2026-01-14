@@ -1,0 +1,84 @@
+======================================
+DSTREET IMPORT - CLI VERSION
+======================================
+Script started at: 22:58:45
+
+Step 1: Loading products from eshop (manufacturer ID: 7)...
+✓ Products loaded from eshop
+
+Step 2: Loading stock availables from eshop...
+[STOCK DEBUG] Loading all stock_availables...
+[STOCK DEBUG] Loading batch at offset 0, got 30000 stock_availables
+[STOCK DEBUG] Loading batch at offset 30000, got 30000 stock_availables
+[STOCK DEBUG] Loading batch at offset 60000, got 30000 stock_availables
+[STOCK DEBUG] Loading batch at offset 90000, got 30000 stock_availables
+[STOCK DEBUG] Loading batch at offset 120000, got 30000 stock_availables
+[STOCK DEBUG] Loading batch at offset 150000, got 1417 stock_availables
+[STOCK DEBUG] Total loaded: 151417 stock_availables
+✓ Stock availables loaded
+
+Step 3: Processing XML file: Z:\work\2025/download/dstreet_full.xml
+(This may take several minutes for large files...)
+
+Processed 4208 products from XML file, created 15102 size combinations✓ XML file processed
+
+Step 4: Generating update XML files...
+
+[BATCH DEBUG] Loading batch at offset 0, got 50000 combinations
+[BATCH DEBUG] Loading batch at offset 50000, got 15418 combinations
+[BATCH DEBUG] Total loaded: 65418 combinations
+Total combinations loaded from PrestaShop: 65418
+[FILTER DEBUG] Product IDs to process: 4209
+[FILTER DEBUG] diffArray size: 15102
+[FILTER DEBUG] Sample diffArray keys: bx2192-m, bx2192-l, bx2192-xl, bx2192-xxl, bx2195-m, bx2195-l, bx2195-xl, bx2195-xxl, bx2196-m, bx2196-l
+[FOREACH DEBUG] About to iterate over 65418 combinations
+
+[FILTER SUMMARY]
+- Total combinations checked: 65418
+- Passed product ID filter: 14996
+- Passed diffArray filter: 14940
+- Actually processed: 14940
+
+======================================
+OPTIMIZATION SUMMARY
+======================================
+Stock Availables:
+  - Added to update XML: 4
+  - Skipped (unchanged): 14935
+  - Skip rate: 100%
+
+Products:
+  - Added to update XML: 15
+  - Skipped (unchanged): 4244
+  - Skip rate: 99.6%
+======================================
+[DEBUG] Saving stock XML to: Z:\work\2025\marity.ck\dstreet/webservicesxml/stock_availables_update.xml
+[DEBUG] Saving products XML to: Z:\work\2025\marity.ck\dstreet/webservicesxml/products_update.xml✓ Update XML files generated
+
+Step 5: Creating 'not found' products XML...
+✓ Not found XML created
+
+Step 6: Updating stock via API...
+✓ Stock update completed
+
+Step 7: Updating products via API...
+✓ Products update completed
+
+======================================
+API UPDATE RESULTS
+======================================
+Stock Availables:
+  - Success: 4
+  - Errors:  0
+
+Products:
+  - Success: 15
+  - Errors:  0
+======================================
+
+======================================
+EXECUTION TIME
+======================================
+Total script execution time: 86.84 seconds
+Script finished at: 23:00:12
+======================================

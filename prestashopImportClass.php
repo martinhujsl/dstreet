@@ -19,6 +19,7 @@ class PrestaShopWebsSrvicesImportClass {
 	private $diffArray;
 	private $codesConversion;
 	private $productsCache; // Cache for current product states (visibility, active)
+	private $isCli; // Detect if running in CLI mode
 
 	function __construct() {
 		$this->productIds = ''; // Initialize to empty string
@@ -26,8 +27,53 @@ class PrestaShopWebsSrvicesImportClass {
 		$this->stockAvailableIds = [];
 		$this->diffArray = [];
 		$this->productsCache = []; // Initialize products cache
+		$this->isCli = (php_sapi_name() === 'cli'); // Detect CLI mode
 		$this->initPrestashopWebSarvices();
 		$this->loadCodesConversion();
+	}
+
+	/**
+	 * Output helper - formats output for CLI or web
+	 */
+	private function out($message, $color = null) {
+		if ($this->isCli) {
+			// CLI mode - use ANSI colors
+			$colors = [
+				'green' => "\033[32m",
+				'red' => "\033[31m",
+				'orange' => "\033[33m",
+				'blue' => "\033[34m",
+				'reset' => "\033[0m",
+				'bold' => "\033[1m"
+			];
+			
+			if ($color && isset($colors[$color])) {
+				echo $colors[$color] . $message . $colors['reset'];
+			} else {
+				echo $message;
+			}
+		} else {
+			// Web mode - use HTML
+			if ($color) {
+				$htmlColors = [
+					'green' => '#00cc00',
+					'red' => '#cc0000',
+					'orange' => '#ff8800',
+					'blue' => '#0066cc'
+				];
+				$colorStyle = isset($htmlColors[$color]) ? "color: {$htmlColors[$color]};" : '';
+				echo "<strong style=\"{$colorStyle}\">{$message}</strong>";
+			} else {
+				echo $message;
+			}
+		}
+	}
+
+	/**
+	 * Line break helper - \n for CLI, <br> for web
+	 */
+	private function br() {
+		echo $this->isCli ? "\n" : '<br>';
 	}
 
 	private function loadCodesConversion(){
@@ -182,7 +228,8 @@ class PrestaShopWebsSrvicesImportClass {
 
 	function getStockAvailableIds() {
 		// Load ALL stock_availables using pagination (including current quantity for comparison)
-		echo '<br>[STOCK DEBUG] Loading all stock_availables...';
+		$this->out('[STOCK DEBUG] Loading all stock_availables...');
+		$this->br();
 		$this->stockAvailableIds = [];
 		$offset = 0;
 		$limit = BATCH_SIZE_STOCK_AVAILABLES; // Use configurable batch size from defines
@@ -217,19 +264,22 @@ class PrestaShopWebsSrvicesImportClass {
 					}
 				}
 
-				echo '<br>[STOCK DEBUG] Loading batch at offset ' . $offset . ', got ' . $batchCount . ' stock_availables';
+				$this->out('[STOCK DEBUG] Loading batch at offset ' . $offset . ', got ' . $batchCount . ' stock_availables');
+				$this->br();
 
 				$loadedCount += $batchCount;
 				$offset += $limit;
 
 			} catch (Exception $e) {
-				echo '<br>[STOCK DEBUG] Error loading stock_availables: ' . $e->getMessage();
+				$this->out('[STOCK DEBUG] Error loading stock_availables: ' . $e->getMessage(), 'red');
+				$this->br();
 				break;
 			}
 
 		} while ($batchCount == $limit);
 
-		echo '<br>[STOCK DEBUG] Total loaded: ' . $loadedCount . ' stock_availables';
+		$this->out('[STOCK DEBUG] Total loaded: ' . $loadedCount . ' stock_availables');
+		$this->br();
 	}
 
 	function createNotFindProductXML(){
