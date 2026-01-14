@@ -1,6 +1,13 @@
 <?php
 require_once 'iniSets.cfg.php';
-require_once 'defines.cfg.php';
+
+// Load production config if exists, otherwise use default
+if (file_exists(__DIR__ . '/defines-prod.cfg.php')) {
+    require_once 'defines-prod.cfg.php';
+} else {
+    require_once 'defines.cfg.php';
+}
+
 require_once('PSWebServiceLibrary.php');
 
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
